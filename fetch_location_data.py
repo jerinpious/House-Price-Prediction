@@ -6,7 +6,7 @@ from sklearn.datasets import fetch_california_housing
 from tqdm import tqdm
 import os
 
-# Load California Housing dataset
+# Load dataset
 data = fetch_california_housing()
 df = pd.DataFrame(
     data.data,
@@ -66,7 +66,7 @@ def process_in_chunks(df, chunk_size=100, checkpoint_file='checkpoint.pkl',
                         loc_update["County"].append('Unknown')
                         loc_update["Road"].append('Unknown')
                     
-                    time.sleep(1)  # Respect Nominatim's usage policy
+                    time.sleep(1)  
                     pbar.update(1)
                 
                 # Save checkpoint after each chunk
@@ -94,9 +94,8 @@ def merge_results_with_df(df, results):
     df_result['Road'] = results['Road']
     return df_result
 
-# Example usage with smaller chunk for demonstration
-# For actual use, you might want to use larger chunks like 100 or 500
-CHUNK_SIZE = 100  # Small chunk size for demonstration
+
+CHUNK_SIZE = 100  
 
 print(f"Total records to process: {len(df)}")
 print(f"Processing in chunks of {CHUNK_SIZE}")
