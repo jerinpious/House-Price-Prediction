@@ -1,28 +1,71 @@
 # House Price Prediction Project
 
 ## Overview
-This project involves building a machine learning model to predict house prices using features like latitude, longitude, and other property-related data. It includes data preprocessing, feature engineering, and model training, using both classification and regression algorithms. The project is structured into different parts for data collection, analysis, and model building.
+This project is a machine learning-based application to predict house prices. The model is built using Random Forest Regressor, incorporating feature engineering and data preprocessing. Additionally, a frontend interface has been developed using Streamlit to make the prediction process user-friendly for regular customers. The project is structured into different parts for data collection, analysis, and model building.
 
+## Screenshots
+![Project_image](img/frontend1.png)
+
+![Project_image2](img/frontend2.png)
+
+
+## How to Run the Project
+### Prerequisites
+Ensure you have the following installed:
+
+- Python 3.8+
+- Virtual Environment (recommended)
+
+1. Clone the repository:
+```bash
+git clone https://github.com/jerinpious/House-Price-Prediction
+cd House-Price-Prediction
+```
+2. Create and activate a virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+```
+
+3. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Preprocess the dataset(optional):
+
+``` bash
+python src/preprocess.py
+```
+
+5. Train the model(optional):
+```bash
+python src/main.py
+```
+6. Run the Streamlit app:
+
+```bash
+streamlit run app/app.py
+```
 ## Project Structure
 The project consists of the following files and directories:
 
 - `data/`: Contains the pickle file with the latitude and longitude data along with the corresponding county and road information.
 - `fetched_location_data.py`: A Python script that fetches the actual county and road information using latitude and longitude data from the dataset. It uses the Geopy library to retrieve the data and saves the results as a pickle file.
-- `main.ipynb`: The main Jupyter notebook that:
-  1. Loads and imports the data from the pickle file.
-  2. Performs exploratory data analysis (EDA) to examine the features and target variables.
-  3. Implements Random Forest Regressor to assess the importance of each feature.
-  4. Conducts data preprocessing, including feature engineering and dropping unnecessary features.
-  5. Uses classification algorithms (SGDClassifier) to predict missing values for the `Road` and `County` columns.
-  6. Trains two models: Random Forest Regressor and Linear Regression, using the processed dataset.
+- `main.ipynb`: The main Jupyter notebook that loads and imports the data from the pickle file. 
+Trains models: Random Forest Regressor using the processed dataset.
+Evaluates model performance and exports the trained model as a .pkl file.
+- `preprocess.py`: Handles data preprocessing tasks, including:
+Encoding the County and Road features using LabelEncoder.
+Saving the processed data for consistent feature mapping across predictions.
+- `main.py`: A Streamlit-based web application that:
+Provides an interactive interface for users to input feature values.
+Maps user inputs to encoded values for County and Road.
+Uses the trained model to predict house prices based on user inputs.
 
-## Dependencies
-- `pandas`
-- `numpy`
-- `scikit-learn`
-- `geopy`
-- `matplotlib`
-- `seaborn`
 
 You can install the required dependencies using the following command:
 
@@ -34,15 +77,12 @@ pip install -r requirements.txt
 ### Data Loading:
 The `fetched_location_data.py` script creates a pickle file with latitude and longitude coordinates along with corresponding county and road information fetched using Geopy.
 
-### Exploratory Data Analysis (EDA):
-The `main.ipynb` file loads the pickle file and performs an initial analysis of the dataset using EDA techniques. This helps to understand the data distribution, feature correlation, and feature importance.
-
-### Data Preprocessing:
-The dataset undergoes feature engineering and cleaning. The latitude and longitude features are used to fetch missing data, specifically the `County` and `Road` features. Some irrelevant or non-correlated features are dropped to improve the model's performance.
+### Exploratory Data Analysis (EDA) & Data Preprocessing:
+The `preprocess.ipynb` file loads the pickle file and performs an initial analysis of the dataset using EDA techniques. This helps to understand the data distribution, feature correlation, and feature importance. The dataset undergoes feature engineering and cleaning. The latitude and longitude features are used to fetch missing data, specifically the `County` and `Road` features. Some irrelevant or non-correlated features are dropped to improve the model's performance.
 
 ### Modeling:
 - **SGDClassifier** is used to predict missing values for the `Road` and `County` columns.
-- **Random Forest Regressor** and **Linear Regression** models are trained on the preprocessed data to predict house prices.
+- **Random Forest Regressor** model are trained on the preprocessed data to predict house prices.
 
 ### Model Evaluation:
 The performance of the trained models is evaluated using metrics such as R², RMSE, and MAE to determine the best model for price prediction.
