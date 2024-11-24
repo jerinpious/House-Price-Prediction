@@ -1,9 +1,7 @@
 import pandas as pd
 import joblib
-from flask import Flask
-
-app = Flask(__name__)
-
+import streamlit as st
+model = joblib.load('./model/trained_model.pkl')
 road_encoded_df = pd.read_csv('./data/encoded_Road.csv')
 county_encoded_df = pd.read_csv('./data/encoded_County.csv')
 
@@ -26,18 +24,32 @@ def encode_input(county,road):
     
     return encoded_county,encoded_road
         
-county_input = 'Los Angeles County'  # Replace with actual user input
-road_input = 'Barry Avenue'  # Replace with actual user input
-
-encoded_county, encoded_road = encode_input(county_input, road_input)
-print(f"Encoded County: {encoded_county}, Encoded Road: {encoded_road}")
+st.title("California House Price Predictor")
 
 
-@app.route("/")
-def hello_world():
-    return "<p> Hello, World!</p>"
+st.header("Enter the details below:")
+
+county = st.selectbox("Select County:", list(county_mapping.keys()))
+road = st.selectbox("Select Road:", list(road_mapping.keys()))
+feature1 = st.number_input("Median Income:", min_value=0.0, step=0.1)
+feature2 = st.number_input("House Age:", min_value=0.0, step=0.1)
+feature3 = st.number_input("Average Number of Rooms:", min_value=0.0, step=0.1)
+feature4 = st.number_input("Average Number of Bedrooms", min_value=0.0, step=0.1)
+feature5 = st.number_input("Neighborhood Population", min_value=0.0, step=0.1)
+feature6 = st.number_input("Average Number of Occupants", min_value=0.0, step=0.1)
+
+# Encode user inputs
+encoded_county, encoded_road = encode_input(county, road)
+
+# Predict button
+if st.button("Predict"):
+    # Ensure all inputs are provided
+    if encoded_county is None or encoded_road is None:
+        st.error("Invalid input for County or Road. Please select valid options.")
+    else:
+        # Prepare input for the model
+        input_features = [feature1, feature2, feature3, feature4,feature5,feature6,encoded_county,encoded_road]
+        prediction = model.predict([input_features])
+        st.success(f"Predicted House Price: ${prediction[0]:,.2f}")
 
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
